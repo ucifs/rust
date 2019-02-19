@@ -60,8 +60,8 @@ pub fn cleanup() {
 }
 
 pub fn push(f: Box<dyn FnBox()>) -> bool {
+    let _guard = LOCK.lock();
     unsafe {
-        let _guard = LOCK.lock();
         if init() {
             // We are just moving `f` around, not calling it.
             // There is no possibility of reentrancy here.
