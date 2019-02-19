@@ -8,7 +8,8 @@ use crate::io::lazy::Lazy;
 use crate::io::{self, Initializer, BufReader, LineWriter};
 use crate::sync::{Arc, Mutex, MutexGuard};
 use crate::sys::stdio;
-use crate::sys_common::remutex::{ReentrantMutex, ReentrantMutexGuard};
+use crate::panic::{UnwindSafe, RefUnwindSafe};
+use crate::parking_lot::{ReentrantMutex, ReentrantMutexGuard};
 use crate::thread::LocalKey;
 
 thread_local! {
@@ -467,7 +468,7 @@ impl Stdout {
     /// ```
     #[stable(feature = "rust1", since = "1.0.0")]
     pub fn lock(&self) -> StdoutLock<'_> {
-        StdoutLock { inner: self.inner.lock().unwrap_or_else(|e| e.into_inner()) }
+        StdoutLock { inner: self.inner.lock() }
     }
 }
 
@@ -493,6 +494,12 @@ impl Write for Stdout {
         self.lock().write_fmt(args)
     }
 }
+
+#[stable(feature = "rust1", since = "1.0.0")]
+impl UnwindSafe for Stdout {}
+#[stable(feature = "rust1", since = "1.0.0")]
+impl RefUnwindSafe for Stdout {}
+
 #[stable(feature = "rust1", since = "1.0.0")]
 impl Write for StdoutLock<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
@@ -509,6 +516,11 @@ impl fmt::Debug for StdoutLock<'_> {
         f.pad("StdoutLock { .. }")
     }
 }
+
+#[stable(feature = "rust1", since = "1.0.0")]
+impl UnwindSafe for StdoutLock<'_> {}
+#[stable(feature = "rust1", since = "1.0.0")]
+impl RefUnwindSafe for StdoutLock<'_> {}
 
 /// A handle to the standard error stream of a process.
 ///
@@ -620,7 +632,7 @@ impl Stderr {
     /// ```
     #[stable(feature = "rust1", since = "1.0.0")]
     pub fn lock(&self) -> StderrLock<'_> {
-        StderrLock { inner: self.inner.lock().unwrap_or_else(|e| e.into_inner()) }
+        StderrLock { inner: self.inner.lock() }
     }
 }
 
@@ -646,6 +658,12 @@ impl Write for Stderr {
         self.lock().write_fmt(args)
     }
 }
+
+#[stable(feature = "rust1", since = "1.0.0")]
+impl UnwindSafe for Stderr {}
+#[stable(feature = "rust1", since = "1.0.0")]
+impl RefUnwindSafe for Stderr {}
+
 #[stable(feature = "rust1", since = "1.0.0")]
 impl Write for StderrLock<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
@@ -662,6 +680,11 @@ impl fmt::Debug for StderrLock<'_> {
         f.pad("StderrLock { .. }")
     }
 }
+
+#[stable(feature = "rust1", since = "1.0.0")]
+impl UnwindSafe for StderrLock<'_> {}
+#[stable(feature = "rust1", since = "1.0.0")]
+impl RefUnwindSafe for StderrLock<'_> {}
 
 /// Resets the thread-local stderr handle to the specified writer
 ///
@@ -767,7 +790,6 @@ pub use realstd::io::{_eprint, _print};
 
 #[cfg(test)]
 mod tests {
-    use crate::panic::{UnwindSafe, RefUnwindSafe};
     use crate::thread;
     use super::*;
 
