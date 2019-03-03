@@ -42,7 +42,6 @@ pub mod at_exit_imp;
 #[cfg(feature = "backtrace")]
 pub mod backtrace;
 pub mod io;
-pub mod mutex;
 #[cfg(any(rustdoc, // see `mod os`, docs are generated for multiple platforms
           unix,
           target_os = "redox",
