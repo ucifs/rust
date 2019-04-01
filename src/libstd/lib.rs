@@ -500,15 +500,14 @@ pub mod rt;
 mod std_detect;
 
 #[path = "../parking_lot/core/src/lib.rs"]
-#[allow(missing_debug_implementations, missing_docs, dead_code, unused_imports)]
 mod parking_lot_core;
 
 #[path = "../parking_lot/lock_api/src/lib.rs"]
-#[allow(missing_debug_implementations, missing_docs, dead_code, unused_imports)]
+#[allow(dead_code)]
 mod lock_api;
 
 #[path = "../parking_lot/src/lib.rs"]
-#[allow(missing_debug_implementations, missing_docs, dead_code, unused_imports)]
+#[allow(dead_code)]
 mod parking_lot;
 
 
