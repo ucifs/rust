@@ -30,6 +30,7 @@ pub mod stack_overflow;
 pub mod thread;
 pub mod thread_local;
 pub mod time;
+pub mod unwind;
 pub mod stdio;
 
 pub use crate::sys_common::os_str_bytes as os_str;
