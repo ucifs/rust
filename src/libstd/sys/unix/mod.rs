@@ -31,7 +31,6 @@ pub mod android;
 #[cfg(feature = "backtrace")]
 pub mod backtrace;
 pub mod cmath;
-pub mod condvar;
 pub mod env;
 pub mod ext;
 pub mod fast_thread_local;
@@ -39,7 +38,6 @@ pub mod fd;
 pub mod fs;
 pub mod memchr;
 pub mod io;
-pub mod mutex;
 #[cfg(not(target_os = "l4re"))]
 pub mod net;
 #[cfg(target_os = "l4re")]
@@ -51,7 +49,6 @@ pub mod path;
 pub mod pipe;
 pub mod process;
 pub mod rand;
-pub mod rwlock;
 pub mod stack_overflow;
 pub mod thread;
 pub mod thread_local;

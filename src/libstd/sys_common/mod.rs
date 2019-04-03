@@ -41,9 +41,7 @@ pub mod alloc;
 pub mod at_exit_imp;
 #[cfg(feature = "backtrace")]
 pub mod backtrace;
-pub mod condvar;
 pub mod io;
-pub mod mutex;
 #[cfg(any(rustdoc, // see `mod os`, docs are generated for multiple platforms
           unix,
           target_os = "redox",
@@ -52,8 +50,6 @@ pub mod mutex;
           all(target_vendor = "fortanix", target_env = "sgx")))]
 pub mod os_str_bytes;
 pub mod poison;
-pub mod remutex;
-pub mod rwlock;
 pub mod thread;
 pub mod thread_info;
 pub mod thread_local;

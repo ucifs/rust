@@ -46,16 +46,15 @@ impl DoubleEndedIterator for Args {
 }
 
 mod imp {
-    use crate::os::unix::prelude::*;
-    use crate::mem;
     use crate::ffi::{CStr, OsString};
     use crate::marker::PhantomData;
+    use crate::mem;
+    use crate::os::unix::prelude::*;
+    use crate::sync::RawMutex;
     use super::Args;
 
-    use crate::sys_common::mutex::Mutex;
-
     static mut GLOBAL_ARGS_PTR: usize = 0;
-    static LOCK: Mutex = Mutex::new();
+    static LOCK: RawMutex = RawMutex::new();
 
     pub unsafe fn init(argc: isize, argv: *const *const u8) {
         let args = (0..argc).map(|i| {
@@ -82,8 +81,8 @@ mod imp {
     }
 
     fn clone() -> Option<Vec<Vec<u8>>> {
+        let _guard = LOCK.lock();
         unsafe {
-            let _guard = LOCK.lock();
             let ptr = get_global_ptr();
             (*ptr).as_ref().map(|s| (**s).clone())
         }

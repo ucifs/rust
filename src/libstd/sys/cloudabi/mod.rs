@@ -1,6 +1,7 @@
 use crate::io::ErrorKind;
 use crate::mem;
 
+pub mod abi;
 #[path = "../unix/alloc.rs"]
 pub mod alloc;
 pub mod args;
@@ -8,13 +9,10 @@ pub mod args;
 pub mod backtrace;
 #[path = "../unix/cmath.rs"]
 pub mod cmath;
-pub mod condvar;
 pub mod io;
 #[path = "../unix/memchr.rs"]
 pub mod memchr;
-pub mod mutex;
 pub mod os;
-pub mod rwlock;
 pub mod stack_overflow;
 pub mod stdio;
 pub mod thread;
@@ -23,8 +21,6 @@ pub mod thread_local;
 pub mod time;
 
 pub use crate::sys_common::os_str_bytes as os_str;
-
-mod abi;
 
 mod shims;
 pub use self::shims::*;
